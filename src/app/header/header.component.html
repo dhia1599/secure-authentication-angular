@@ -32,7 +32,10 @@
           <a class="nav-link mx-2" href="#!"><i class="fa fa-heart pe-2"></i>Trips</a>
         </li>
         <li class="nav-item ms-3">
-          <a class="btn btn-light btn-rounded" href="/login">Sign in</a>
+          <a class="btn btn-light btn-rounded" *ngIf="!isAuthenticated" href="/login">Sign in</a>
+        </li>
+        <li class="nav-item ms-3">
+          <a class="btn btn-light btn-rounded" *ngIf="isAuthenticated" (click)="logout()">Logout</a>
         </li>
       </ul>
     </div>
