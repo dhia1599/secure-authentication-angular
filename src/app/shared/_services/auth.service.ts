@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -6,6 +7,9 @@ import { Injectable } from '@angular/core';
 export class AuthService {
 
   private tokenKey = 'auth_token';
+
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.isAuthenticated())
+  isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
   constructor() { }
 
@@ -22,11 +26,13 @@ export class AuthService {
     if (token !== null){
       window.localStorage.setItem("auth_token", token)
     } else {
-      window.localStorage.removeItem("auth_token")
+      this.clearToken()
     }
+    this.isAuthenticatedSubject.next(this.isAuthenticated())
   }
 
   clearToken(): void {
     localStorage.removeItem(this.tokenKey);
+    this.isAuthenticatedSubject.next(false)
   }
 }
